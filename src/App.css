@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Basic Reset & Global Styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d); /* Vibrant background gradient */
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #e0e0e0; /* Light text color for contrast */
+  overflow: hidden; /* Prevent body scroll, containers will scroll */
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+
+/* Main App Container - Elevated & Centered */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Glass Pane Base Style */
+.glass-pane {
+  background: rgba(255, 255, 255, 0.08); /* Transparent white */
+  backdrop-filter: blur(15px) saturate(180%); /* The magic glass effect */
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow */
+  overflow: hidden; /* Crucial for rounded corners on inner elements */
+  display: flex; /* Make it a flex container for its children */
+  flex: 1; /* Allow it to grow */
+  max-width: 1400px; /* Max width for the whole app */
+  height: 90vh; /* Controlled height */
+}
+
+.editor-pane,
+.preview-pane-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.editor-pane {
+  border-right: 1px solid rgba(255, 255, 255, 0.1); /* Separator */
+}
+
+/* Editor Header with Toolbar and Present Button */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px; /* Space between toolbar and button */
+}
+
+/* Toolbar Styling */
+.toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.05); /* Slightly darker glass for toolbar */
+  border-radius: 10px;
+}
+
+.toolbar-button,
+.presentation-button,
+.copy-button,
+.exit-presentation-button {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  border: none;
+  color: #f0f0f0;
+  padding: 8px 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth transition for all properties */
+  position: relative;
+  overflow: hidden; /* For the subtle light effect */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toolbar-button:hover,
+.presentation-button:hover,
+.copy-button:hover,
+.exit-presentation-button:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+  transform: translateY(-3px) scale(1.02); /* Lift and slightly enlarge */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.toolbar-button::before,
+.presentation-button::before,
+.copy-button::before,
+.exit-presentation-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1); /* Subtle shimmer effect */
+  transform: skewX(-30deg);
+  transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.toolbar-button:hover::before,
+.presentation-button:hover::before,
+.copy-button:hover::before,
+.exit-presentation-button:hover::before {
+  left: 100%;
+}
+
+
+/* Textarea Styling */
+textarea {
+  width: 100%;
+  flex-grow: 1;
+  border: none;
+  background: rgba(255, 255, 255, 0.05); /* Match glass theme */
+  color: #f8f8f2;
+  font-size: 16px;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace; /* Great for code */
+  padding: 15px;
+  resize: none;
+  border-radius: 10px;
+  outline: none;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+textarea:focus {
+  background: rgba(255, 255, 255, 0.1); /* Slightly lighter on focus */
+}
+
+
+/* Preview Pane Container */
+.preview-pane-container {
+  position: relative;
+}
+
+.preview-pane {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  color: #282c34; /* Darker text for readability on light preview */
+  background: rgba(255, 255, 255, 0.8); /* Opaque white for clear preview */
+  border-radius: 15px; /* Match outer container but slightly smaller */
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Copy HTML button within preview */
+.copy-button {
+  position: absolute;
+  top: 25px; /* Adjusted to look good with padding */
+  right: 25px; /* Adjusted to look good with padding */
+  z-index: 10;
+  padding: 6px 12px; /* Slightly smaller */
+  font-size: 13px;
+}
+
+
+/* Markdown specific styling in preview */
+.preview-pane h1, .preview-pane h2, .preview-pane h3, .preview-pane h4, .preview-pane h5, .preview-pane h6 {
+  color: #1a2a6c; /* Match a color from the background gradient */
+  font-weight: 700;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.preview-pane p {
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+
+.preview-pane a {
+  color: #b21f1f; /* Another background gradient color */
+  text-decoration: none;
+  border-bottom: 1px dashed #b21f1f;
+  transition: color 0.3s ease, border-bottom-color 0.3s ease;
+}
+
+.preview-pane a:hover {
+  color: #fdbb2d;
+  border-bottom-color: #fdbb2d;
+}
+
+.preview-pane blockquote {
+  border-left: 4px solid #fdbb2d;
+  background: rgba(0, 0, 0, 0.05);
+  color: #444;
+  padding: 10px 15px;
+  margin: 1em 0;
+  border-radius: 5px;
+  font-style: italic;
+}
+
+.preview-pane code {
+  background-color: rgba(0, 0, 0, 0.08);
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  color: #d63384; /* A pop of color for inline code */
+}
+
+.preview-pane pre {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1em 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-pane pre code {
+  background: none;
+  padding: 0;
+  color: #007bff; /* Code block color */
+  font-size: 0.95em;
+}
+
+.preview-pane ul, .preview-pane ol {
+  margin-left: 20px;
+  margin-bottom: 1em;
+}
+
+.preview-pane li {
+  margin-bottom: 0.5em;
+}
+
+.preview-pane strong {
+  color: #1a2a6c; /* Stronger accent color */
+}
+
+/* Presentation Mode Styles */
+.presentation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000; /* Solid background for presentation */
+  z-index: 1000;
+}
+
+.exit-presentation-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+/* Ensure Reveal.js elements use our custom font if possible */
+.reveal {
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+  .glass-pane {
+    flex-direction: column;
+    height: 95vh;
+    max-width: 95vw;
+  }
+  .editor-pane {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 50%;
+  }
+  .preview-pane-container {
+    height: 50%;
+  }
+  .copy-button {
+    top: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .editor-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .toolbar {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .presentation-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .toolbar-button {
+    padding: 6px 10px;
+  }
+}
